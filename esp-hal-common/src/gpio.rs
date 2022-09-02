@@ -190,6 +190,11 @@ pub trait OutputPin: Pin {
     fn internal_pull_up(&mut self, on: bool) -> &mut Self;
 
     fn internal_pull_down(&mut self, on: bool) -> &mut Self;
+
+    /// Invert the pins input and output.
+    ///
+    /// Reads `1` when a `0` is attached and vice versa.
+    fn invert(&mut self) -> &mut Self;
 }
 
 #[doc(hidden)]
@@ -1019,6 +1024,13 @@ macro_rules! impl_output {
                     w.out_sel().bits(OutputSignal::GPIO as OutputSignalType)
                 });
 
+                self
+            }
+
+            fn invert(&mut self) -> &mut Self {
+                unsafe { &*GPIO::PTR }.func_out_sel_cfg[$pin_num].modify(|_, w| unsafe {
+                    w.inv_sel().set_bit()
+                });
                 self
             }
 
