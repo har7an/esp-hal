@@ -146,6 +146,11 @@ pub trait InputPin: Pin {
     /// pin with the given [input `signal`](`InputSignal`). Any other
     /// connected signals remain intact.
     fn disconnect_input_from_peripheral(&mut self, signal: InputSignal) -> &mut Self;
+
+    // /// Invert the pins input and output.
+    // ///
+    // /// Reads `1` when a `0` is attached and vice versa.
+    // fn invert(&mut self) -> &mut Self;
 }
 
 pub trait OutputPin: Pin {
@@ -664,6 +669,13 @@ macro_rules! impl_input {
 
                 self
             }
+
+            //fn invert(&mut self) -> &mut Self {
+            //    unsafe { &*GPIO::PTR }.func_in_sel_cfg[signal as usize].modify(|_, w| unsafe {
+            //        w.in_inv_sel().set_bit()
+            //    });
+            //    self
+            //}
         }
 
         impl<MODE> Pin for $pxi<MODE> {
@@ -1115,7 +1127,7 @@ macro_rules! impl_from {
                 pin.$function()
             }
         }
-    }
+    };
 }
 
 #[doc(hidden)]
@@ -1315,9 +1327,9 @@ macro_rules! analog {
 pub use analog;
 pub use gpio;
 pub use impl_errata36;
+pub use impl_from;
 pub use impl_gpio_register_access;
 pub use impl_input;
-pub use impl_from;
 pub use impl_interrupt_status_register_access;
 pub use impl_output;
 pub use impl_output_wrap;

@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+SCRIPT_PATH="$(dirname $(readlink -f $0))"
+ALIASES="$SCRIPT_PATH/../aliases.sh"
+
+if ! [[ -f "$ALIASES" ]]; then
+    echo "No such file!" 1>&2
+    exit 1
+fi
+
+source "$ALIASES" 2>/dev/null 1>&2
+esprust-analyzer "$@"
