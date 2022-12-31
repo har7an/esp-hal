@@ -1416,7 +1416,7 @@ pub trait Instance {
             unsafe {
                 // It seems that `copy_nonoverlapping` is significantly faster than regular
                 // `copy`, by about 20%... ?
-                core::ptr::copy_nonoverlapping::<u32>(
+                core::ptr::copy::<u32>(
                     chunk.as_ptr() as *const u32,
                     fifo_ptr as *mut u32,
                     // FIXME: Using any other transfer length **does not work**. I don't understand
